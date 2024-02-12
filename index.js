@@ -1,14 +1,13 @@
 import express from "express";
 import mongoose from "mongoose";
+import "dotenv/config";
 import questionRouter from "./src/routes/question.js";
 const app = express();
 
 app.use(express.json());
 
 mongoose
-  .connect(
-    "mongodb+srv://gintarekort:Serveris1@cluster0.l2fl77s.mongodb.net/question-api"
-  )
+  .connect(process.env.MONGO_CONNECTION)
   .then(() => console.log("Connected to DB"))
   .catch((err) => {
     console.log(err);
@@ -16,4 +15,4 @@ mongoose
 
 app.use(questionRouter);
 
-app.listen(3000);
+app.listen(process.env.PORT);

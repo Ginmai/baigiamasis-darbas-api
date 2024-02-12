@@ -1,8 +1,15 @@
+import question from "../models/question.js";
 import QuestionModel from "../models/question.js";
 
 const GET_ALL_QUESTIONS = async (req, res) => {
   const questions = await QuestionModel.find();
   return res.status(200).json({ questions: questions });
+};
+
+const GET_QUESTION_BY_ID = async (req, res) => {
+  const question = await QuestionModel.findById(req.params.id);
+
+  return res.status(200).json({ question: question });
 };
 
 const INSERT_QUESTION = async (req, res) => {
@@ -24,4 +31,15 @@ const INSERT_QUESTION = async (req, res) => {
   }
 };
 
-export { GET_ALL_QUESTIONS, INSERT_QUESTION };
+const DELETE_QUESTION_BY_ID = async (req, res) => {
+  const question = await QuestionModel.findByIdAndDelete(req.params.id);
+
+  return res.status(200).json({ question: question });
+};
+
+export {
+  GET_ALL_QUESTIONS,
+  INSERT_QUESTION,
+  GET_QUESTION_BY_ID,
+  DELETE_QUESTION_BY_ID,
+};
