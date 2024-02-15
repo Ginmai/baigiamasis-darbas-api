@@ -3,7 +3,15 @@ import QuestionModel from "../models/question.js";
 
 const GET_ALL_QUESTIONS = async (req, res) => {
   try {
-    const questions = await QuestionModel.find();
+    let questions = await QuestionModel.find();
+
+    questions = questions.map((question) => {
+      return {
+        question: question,
+        user: "Gintare",
+      };
+    });
+
     return res.status(200).json({ questions: questions });
   } catch (err) {
     console.log(err);
