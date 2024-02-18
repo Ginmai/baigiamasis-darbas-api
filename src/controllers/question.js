@@ -1,16 +1,11 @@
-import question from "../models/question.js";
 import QuestionModel from "../models/question.js";
+import UserModel from "../models/user.js";
+
+import jwt from "jsonwebtoken";
 
 const GET_ALL_QUESTIONS = async (req, res) => {
   try {
     let questions = await QuestionModel.find();
-
-    questions = questions.map((question) => {
-      return {
-        question: question,
-        user: "Gintare",
-      };
-    });
 
     return res.status(200).json({ questions: questions });
   } catch (err) {
@@ -19,11 +14,11 @@ const GET_ALL_QUESTIONS = async (req, res) => {
   }
 };
 
-const GET_QUESTION_BY_USER_ID = async (req, res) => {
+const GET_QUESTIONS_BY_USER_ID = async (req, res) => {
   try {
-    const question = await QuestionModel.find({ userId: req.params.id });
+    const questions = await QuestionModel.find({ userId: req.params.id });
 
-    return res.status(200).json({ question: question });
+    return res.status(200).json({ questions: questions });
   } catch (err) {
     console.log(err);
     return res.status(500).json({ message: "something went wrong" });
@@ -32,10 +27,20 @@ const GET_QUESTION_BY_USER_ID = async (req, res) => {
 
 const INSERT_QUESTION = async (req, res) => {
   try {
+    const token = req.headers.authorization;
+
+    const user_id = await jwt.verify(
+      token,
+      process.env.JWT_SECRET,
+      (err, decoded) => {
+        return decoded.id;
+      }
+    );
+
     const question = new QuestionModel({
       question_text: req.body.question_text,
-      date: req.body.date,
-      user_id: req.body.user_id,
+      date: new Date().toDateString(),
+      user_id: user_id,
       likes: 0,
       dislikes: 0,
     });
@@ -83,6 +88,7 @@ const QUESTION_DISLIKE = async (req, res) => {
 
 const DELETE_QUESTION_BY_ID = async (req, res) => {
   try {
+    console.log("DELETE");
     const question = await QuestionModel.findByIdAndDelete(req.params.id);
 
     return res.status(200).json({ question: question });
@@ -94,7 +100,7 @@ const DELETE_QUESTION_BY_ID = async (req, res) => {
 
 export {
   GET_ALL_QUESTIONS,
-  GET_QUESTION_BY_USER_ID,
+  GET_QUESTIONS_BY_USER_ID,
   INSERT_QUESTION,
   QUESTION_LIKE,
   QUESTION_DISLIKE,

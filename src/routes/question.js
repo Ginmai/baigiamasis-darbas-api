@@ -1,7 +1,7 @@
 import express from "express";
 import {
   GET_ALL_QUESTIONS,
-  GET_QUESTION_BY_USER_ID,
+  GET_QUESTIONS_BY_USER_ID,
   INSERT_QUESTION,
   QUESTION_LIKE,
   QUESTION_DISLIKE,
@@ -13,7 +13,7 @@ const router = express.Router();
 
 router.get("/questions", GET_ALL_QUESTIONS);
 
-router.get("/questions/:userId", GET_QUESTION_BY_USER_ID);
+router.get("/questions/:userId", GET_QUESTIONS_BY_USER_ID);
 
 router.post("/questions", auth, INSERT_QUESTION);
 
