@@ -58,6 +58,7 @@ const INSERT_QUESTION = async (req, res) => {
 
 const QUESTION_LIKE = async (req, res) => {
   try {
+    console.log("aaa");
     let question = await QuestionModel.findById(req.params.id);
 
     question.likes = question.likes + 1;
@@ -88,7 +89,6 @@ const QUESTION_DISLIKE = async (req, res) => {
 
 const DELETE_QUESTION_BY_ID = async (req, res) => {
   try {
-    console.log("DELETE");
     const question = await QuestionModel.findByIdAndDelete(req.params.id);
 
     return res.status(200).json({ question: question });
