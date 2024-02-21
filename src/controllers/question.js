@@ -1,5 +1,4 @@
 import QuestionModel from "../models/question.js";
-import UserModel from "../models/user.js";
 
 import jwt from "jsonwebtoken";
 
@@ -58,7 +57,6 @@ const INSERT_QUESTION = async (req, res) => {
 
 const QUESTION_LIKE = async (req, res) => {
   try {
-    console.log("aaa");
     let question = await QuestionModel.findById(req.params.id);
 
     question.likes = question.likes + 1;
